@@ -1,8 +1,8 @@
-// server.js - Backend API สำหรับ Daily Stock Management
+// index.js - Backend API สำหรับ Daily Stock Management
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
-require('dotenv').config({ path: '.env.local' }); // ⬅️ เพิ่มบรรทัดนี้
+require('dotenv').config({ path: '.env.local' });
 const app = express();
 
 // Middleware
@@ -37,6 +37,68 @@ pool.getConnection()
   });
 
 // ==================== API Routes ====================
+
+// Root endpoint - API Documentation
+app.get('/', (req, res) => {
+  res.json({
+    message: '🚀 Daily Stock Management API',
+    version: '1.0.0',
+    status: 'running',
+    database: {
+      connected: true,
+      host: dbConfig.host,
+      database: dbConfig.database
+    },
+    endpoints: {
+      health: {
+        method: 'GET',
+        path: '/health',
+        description: 'ตรวจสอบสถานะเซิร์ฟเวอร์'
+      },
+      getAllStocks: {
+        method: 'GET',
+        path: '/dailystock',
+        description: 'ดึงข้อมูลสต็อกทั้งหมด'
+      },
+      filterStocks: {
+        method: 'GET',
+        path: '/dailystock/filter',
+        description: 'กรองข้อมูลสต็อก',
+        queryParams: '?category=...&location=...&status=...'
+      },
+      getStockById: {
+        method: 'GET',
+        path: '/dailystock/:id',
+        description: 'ดึงข้อมูลสต็อกตาม ID'
+      },
+      addStock: {
+        method: 'POST',
+        path: '/dailystock',
+        description: 'เพิ่มข้อมูลสต็อกใหม่'
+      },
+      updateStock: {
+        method: 'PUT',
+        path: '/dailystock/:id',
+        description: 'แก้ไขข้อมูลสต็อก'
+      },
+      deleteStock: {
+        method: 'DELETE',
+        path: '/dailystock/:id',
+        description: 'ลบข้อมูลสต็อก'
+      },
+      getStats: {
+        method: 'GET',
+        path: '/dailystock/stats/summary',
+        description: 'ดึงสถิติสต็อก'
+      }
+    }
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
 
 // 1. GET - ดึงข้อมูลทั้งหมด
 app.get('/dailystock', async (req, res) => {
@@ -228,11 +290,6 @@ app.get('/dailystock/stats/summary', async (req, res) => {
     console.error('Error fetching stats:', error);
     res.status(500).json({ error: 'เกิดข้อผิดพลาดในการดึงสถิติ' });
   }
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
 });
 
 // 404 Handler
