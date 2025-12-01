@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: dailystock_mysql
+    container_name: attractions_mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -18,7 +18,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: dailystock_phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: mysql
@@ -31,7 +30,6 @@ services:
 
   api:
     build: ./01_api
-    container_name: dailystock_api
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -52,7 +50,6 @@ services:
       context: ./02_frontend
       args:
         - API_HOST=${API_HOST:-http://localhost:3001}
-    container_name: dailystock_frontend
     restart: unless-stopped
     environment:
       - NODE_ENV=production

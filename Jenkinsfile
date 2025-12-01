@@ -120,7 +120,10 @@ EOF
                         docker compose ps
                         
                         # Wait for API to be ready (max 60 seconds)
-                        timeout 60 bash -c 'until curl -f http://localhost:3001/dailystock; do sleep 2; done' || exit 1
+                        timeout 60 bash -c 'until curl -f http://localhost:3001/health; do sleep 2; done' || exit 1
+
+                        # Check attractions endpoint
+                        curl -f http://localhost:3001/dailystock || exit 1
                         
                         echo "Health check passed!"
                     """
