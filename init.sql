@@ -1,0 +1,45 @@
+-- สร้างตาราง DailyStock
+CREATE TABLE IF NOT EXISTS `DailyStock` (
+  `StockID` int(11) NOT NULL,
+  `Category` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `StockStatus` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Location` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ItemName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Unit` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `StockDate` date NOT NULL,
+  `Quantity` decimal(10,3) NOT NULL,
+  PRIMARY KEY (`StockID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ตัวอย่างข้อมูล
+INSERT INTO `DailyStock` VALUES 
+(1, 'เมล็ด', 'ปกติ', 'Roasting room', 'คั่วกลาง อินโด กาโย่', 'กิโลกรัม', '2025-01-11', 1.790),
+(2, 'เมล็ด', 'ปกติ', 'Roasting room', 'คั่วกลาง เคนย่า', 'กิโลกรัม', '2025-01-11', 1.070),
+(3, 'เมล็ด', 'ปกติ', 'Roasting room', 'คั่วเข้ม พม่า', 'กิโลกรัม', '2025-01-11', 2.300),
+(4, 'เมล็ด', 'ปกติ', 'Roasting room', 'คั่วกลาง พม่า', 'กิโลกรัม', '2025-01-11', 2.200),
+(5, 'วัตถุดิบ', 'เหลือน้อย', 'Stockroom', 'Water purra', 'ขวด', '2025-01-11', 57.000),
+(6, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'Evian', 'ขวด', '2025-01-11', 24.000),
+(7, 'วัตถุดิบ', 'ปกติ', 'Coffee Bar', 'Fresh Milk', 'แกลลอน', '2025-01-11', 17.400),
+(8, 'อื่นๆ / ไม่ระบุ', 'ปกติ', 'Coffee Bar', 'Full Cream / Half Cream', 'กล่อง', '2025-01-11', 2.000),
+(9, 'อื่นๆ / ไม่ระบุ', 'ปกติ', 'Coffee Bar', 'Whip cream', 'ขวด', '2025-01-11', 2.800),
+(10, 'วัตถุดิบ', 'ปกติ', 'Coffee Bar', 'Oat Milk', 'กล่อง', '2025-01-11', 4.900),
+(11, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'นมจืด carnation', 'กล่อง', '2025-01-11', 13.900),
+(12, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'นมข้นหวาน carnation', 'ถุง', '2025-01-11', 10.500),
+(13, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'Coco Powder', 'ถุง', '2025-01-11', 12.200),
+(14, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'ผง โอวัลติน', 'ถุง', '2025-01-11', 3.100),
+(15, 'วัตถุดิบ', 'ปกติ', 'Stockroom', 'Thai Tea Powder', 'ถุง', '2025-01-11', 3.000),
+(16, 'วัตถุดิบ', 'สั่งด่วน', 'Stockroom', 'ผงชาใต้', 'ถุง', '2025-01-11', 2.000),
+(17, 'อื่นๆ / ไม่ระบุ', 'สั่งด่วน', 'Stockroom', 'Matcha Powder(100g)', 'ถุง', '2025-01-11', 1.000),
+(18, 'ไซรัป', 'ปกติ', 'Stockroom', 'Brown Sugar', 'ถุง', '2025-01-11', 21.000),
+(19, 'ไซรัป', 'ปกติ', 'Coffee Bar', 'น้ำแดงเฮล', 'ขวด', '2025-01-11', 3.200),
+(20, 'วัตถุดิบ', 'ปกติ', 'Coffee Bar', 'Orange Juice', 'ขวด', '2025-01-11', 5.900),
+(21, 'วัตถุดิบ', 'ปกติ', 'Coffee Bar', 'Apple Juice', 'กล่อง', '2025-01-11', 7.800),
+(22, 'ไซรัป', 'ปกติ', 'Stockroom', 'Soda', 'ขวด', '2025-01-11', 35.000),
+(23, 'ไซรัป', 'ปกติ', 'Stockroom', 'Schweppes', 'กระป๋อง', '2025-01-11', 19.000),
+(24, 'ไซรัป', 'ไม่ใช้งาน', 'Coffee Bar', 'Vanilla syrup', 'ขวด', '2025-01-11', 0.000),
+(25, 'ไซรัป', 'ปกติ', 'Coffee Bar', 'Strawberry Syrup', 'ขวด', '2025-01-11', 3.200),
+(26, 'ไซรัป', 'เหลือน้อย', 'Coffee Bar', 'Lychee Syrup', 'ขวด', '2025-01-11', 0.800),
+(27, 'ไซรัป', 'สั่งด่วน', 'Coffee Bar', 'Yuzu Syrup', 'ขวด', '2025-01-11', 0.700),
+(28, 'ไซรัป', 'ไม่ใช้งาน', 'Coffee Bar', 'Mint Syrup', 'ขวด', '2025-01-11', 0.400),
+(29, 'ไซรัป', 'เหลือน้อย', 'Coffee Bar', 'Hazelnut Syrup', 'ขวด', '2025-01-11', 2.200),
+(30, 'ไซรัป', 'ปกติ', 'Coffee Bar', 'Lemon Syrup', 'ขวด', '2025-01-11', 0.900);
