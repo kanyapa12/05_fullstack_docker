@@ -1,45 +1,41 @@
-FROM node:18-alpine AS base
+# ---------- Stage 1: Build the Next.js application ----------
+FROM node:20-alpine AS builder
 
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Accept build argument for API_HOST
+ARG API_HOST=http://localhost:3001
+
 WORKDIR /app
 
-# Install dependencies
+# Copy package files and install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm ci && npm cache clean --force
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy source files and build
 COPY . .
-
-# รับ API_HOST จาก build args
-ARG API_HOST
-ENV NEXT_PUBLIC_API_URL=${API_HOST}
-
-# Build Next.js
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    API_HOST=${API_HOST}
 RUN npm run build
 
-# Production image
-FROM base AS runner
+
+# ---------- Stage 2: Production runtime ----------
+FROM node:20-alpine AS runner
+
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
+# Copy built application
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 USER nextjs
 
 EXPOSE 3000
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
